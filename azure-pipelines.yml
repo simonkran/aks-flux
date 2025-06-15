@@ -1,0 +1,82 @@
+trigger: none
+
+schedules:
+- cron: "30 2 * * 1"
+  displayName: Weekly Renovate Run
+  branches:
+    include:
+    - main
+  always: true
+
+variables:
+  LOG_LEVEL: 'info'
+  RENOVATE_DRY_RUN: 'false'
+  RENOVATE_CONFIG_FILE: 'renovate.json'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: Renovate
+  displayName: 'Run Renovate Bot'
+  steps:
+  - checkout: self
+    persistCredentials: true
+    clean: true
+
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '18.x'
+
+  - script: |
+      npm install -g renovate
+    displayName: 'Install Renovate'
+
+  - script: |
+      echo "Running Renovate with config: $(RENOVATE_CONFIG_FILE)"
+      echo "Log level: $(LOG_LEVEL)"
+      echo "Dry run: $(RENOVATE_DRY_RUN)"
+    displayName: 'Display Configuration'
+
+  - script: |
+      renovate
+    displayName: 'Run Renovate'
+    env:
+      RENOVATE_TOKEN: $(RENOVATE_TOKEN)
+      RENOVATE_PLATFORM: azure
+      RENOVATE_ENDPOINT: $(System.CollectionUri)
+      RENOVATE_REPOSITORIES: $(Build.Repository.Name)
+      LOG_LEVEL: $(LOG_LEVEL)
+      RENOVATE_DRY_RUN: $(RENOVATE_DRY_RUN)
+      RENOVATE_CONFIG_FILE: $(RENOVATE_CONFIG_FILE)
+      # Enable Flux support
+      RENOVATE_FLUX: true
+      # Azure DevOps specific settings
+      RENOVATE_AZURE_AUTO_COMPLETE: true
+      RENOVATE_AZURE_WORK_ITEM_CREATION: true
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Renovate Results'
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'renovate-report.xml'
+      failTaskOnFailedTests: false
+    continueOnError: true
+
+  - script: |
+      echo "Renovate completed successfully!"
+      echo "Check for new pull requests in the repository."
+      echo "View the Dependency Dashboard issue for status updates."
+    displayName: 'Completion Summary'
+    condition: succeeded()
+
+  - script: |
+      echo "Renovate encountered an error. Check the logs above."
+      echo "Common issues:"
+      echo "- Invalid RENOVATE_TOKEN"
+      echo "- Network connectivity issues"
+      echo "- Configuration errors in renovate.json"
+    displayName: 'Error Summary'
+    condition: failed()

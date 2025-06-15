@@ -1,0 +1,54 @@
+name: Renovate
+
+on:
+  schedule:
+    # Run Renovate every Monday at 2:30 AM UTC
+    - cron: '30 2 * * 1'
+  workflow_dispatch:
+    # Allow manual triggering
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'info'
+        type: choice
+        options:
+          - info
+          - debug
+          - trace
+      overrideSchedule:
+        description: 'Override schedule'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
+  RENOVATE_DRY_RUN: false
+  RENOVATE_CONFIG_FILE: renovate.json
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v40.1.7
+        with:
+          configurationFile: renovate.json
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          LOG_LEVEL: ${{ env.LOG_LEVEL }}
+          RENOVATE_DRY_RUN: ${{ env.RENOVATE_DRY_RUN }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # Enable Flux support
+          RENOVATE_FLUX: true
+          # Override schedule if requested
+          RENOVATE_FORCE: ${{ github.event.inputs.overrideSchedule == 'true' && '{\"schedule\":null}' || '' }}

@@ -1,0 +1,33 @@
+name: Validate Renovate Config
+
+on:
+  push:
+    paths:
+      - 'renovate.json'
+      - '.github/workflows/renovate.yml'
+  pull_request:
+    paths:
+      - 'renovate.json'
+      - '.github/workflows/renovate.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Renovate Config
+        uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
+        with:
+          config_file_path: renovate.json
+
+      - name: Check Renovate Config
+        run: |
+          echo "✅ Renovate configuration is valid!"
+          echo "📋 Configuration summary:"
+          echo "- Schedule: Weekly on Mondays at 2:30 AM UTC"
+          echo "- Auto-merge: Enabled for patch updates"
+          echo "- Manual approval: Required for major updates"
+          echo "- Environment-specific rules: Configured"
+          echo "- Security updates: Prioritized"

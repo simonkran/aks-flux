@@ -1,0 +1,43 @@
+# Staging environment: Balanced permissions
+# Developers get edit access to applications, read-only to infrastructure
+
+# Standard permissions for staging environment  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: podinfo
+  name: k8s-developers-app-admin
+  labels:
+    app.kubernetes.io/managed-by: flux
+rules:
+# Full application management in staging
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "pods/exec", "services", "endpoints", "configmaps"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Limited secrets access for application configuration
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "update", "patch"]
+  resourceNames: ["!grafana-*", "!acr-*", "!dockerhub-*"]  # Exclude infrastructure secrets
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-developers-app-admin
+  namespace: podinfo
+  labels:
+    app.kubernetes.io/managed-by: flux
+subjects:
+- kind: Group
+  name: "k8s-developers"
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: k8s-developers-app-admin
+  apiGroup: rbac.authorization.k8s.io

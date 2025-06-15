@@ -1,0 +1,260 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Renovate configuration for Flux GitOps repository",
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":automergeDigests",
+    ":automergeBranch"
+  ],
+  "timezone": "UTC",
+  "schedule": [
+    "after 2am and before 4am on Monday"
+  ],
+  "labels": [
+    "renovate"
+  ],
+  "commitMessagePrefix": "chore:",
+  "commitMessageTopic": "update {{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "semanticCommits": "enabled",
+  "platformAutomerge": false,
+  "automerge": false,
+  "major": {
+    "automerge": false
+  },
+  "minor": {
+    "automerge": false
+  },
+  "patch": {
+    "automerge": true,
+    "automergeType": "pr"
+  },
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "branchConcurrentLimit": 10,
+  "rebaseWhen": "conflicted",
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**"
+  ],
+  "packageRules": [
+    {
+      "description": "Helm chart updates",
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "stabilityDays": 3,
+      "prCreation": "approval"
+    },
+    {
+      "description": "Infrastructure Helm charts - require approval for major updates",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": [
+        "cert-manager",
+        "external-secrets",
+        "ingress-nginx",
+        "kube-prometheus-stack"
+      ],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "stabilityDays": 7,
+      "prCreation": "approval"
+    },
+    {
+      "description": "Infrastructure Helm charts - auto-merge patch updates",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": [
+        "cert-manager",
+        "external-secrets", 
+        "ingress-nginx",
+        "kube-prometheus-stack"
+      ],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "stabilityDays": 2
+    },
+    {
+      "description": "Application Helm charts",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": [
+        "podinfo",
+        "kurrentdb-operator"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "stabilityDays": 1
+    },
+    {
+      "description": "Container image updates",
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "stabilityDays": 3,
+      "prCreation": "approval"
+    },
+    {
+      "description": "Container image patch updates",
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "stabilityDays": 1
+    },
+    {
+      "description": "Flux system updates",
+      "matchPackageNames": [
+        "fluxcd/flux2",
+        "fluxcd/helm-controller",
+        "fluxcd/kustomize-controller",
+        "fluxcd/notification-controller",
+        "fluxcd/source-controller"
+      ],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "stabilityDays": 7,
+      "prCreation": "approval"
+    },
+    {
+      "description": "Development environment - more aggressive updates",
+      "matchFileNames": [
+        "**/overlays/dev/**",
+        "**/east-asia/dev/**",
+        "**/western-europe/dev/**"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "stabilityDays": 1
+    },
+    {
+      "description": "Production environment - conservative updates",
+      "matchFileNames": [
+        "**/overlays/prod/**",
+        "**/east-asia/prod/**",
+        "**/western-europe/prod/**"
+      ],
+      "dependencyDashboardApproval": true,
+      "stabilityDays": 7,
+      "prCreation": "approval"
+    },
+    {
+      "description": "Security updates - always auto-merge",
+      "matchPackageNames": [
+        "cert-manager",
+        "external-secrets"
+      ],
+      "vulnerabilityAlerts": {
+        "enabled": true
+      },
+      "automerge": true,
+      "automergeType": "pr",
+      "stabilityDays": 0,
+      "prPriority": 10
+    }
+  ],
+  "kubernetes": {
+    "fileMatch": [
+      "\\.yaml$",
+      "\\.yml$"
+    ],
+    "ignorePaths": [
+      "**/templates/**"
+    ]
+  },
+  "helm-values": {
+    "fileMatch": [
+      "**/values\\.ya?ml$",
+      "**/values-.*\\.ya?ml$"
+    ]
+  },
+  "flux": {
+    "fileMatch": [
+      "(^|/)flux-system/.+\\.ya?ml$",
+      "(^|/).*\\.ya?ml$"
+    ]
+  },
+  "regexManagers": [
+    {
+      "description": "Update image tags in Kubernetes YAML files",
+      "fileMatch": [
+        "\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "image:\\s*(?<depName>[^:]+):(?<currentValue>[^\\s]+)",
+        "tag:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?",
+        "appVersion:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?",
+        "version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "description": "Update Helm chart versions",
+      "fileMatch": [
+        "(^|/)kustomization\\.ya?ml$",
+        "(^|/)Chart\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update versions in Flux HelmRelease",
+      "fileMatch": [
+        "(^|/).*\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "apiVersion: helm\\.toolkit\\.fluxcd\\.io.*?kind: HelmRelease.*?chart:\\s+spec:.*?version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
+      ],
+      "depNameTemplate": "{{packageName}}",
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "hostRules": [
+    {
+      "matchHost": "ghcr.io",
+      "hostType": "docker"
+    },
+    {
+      "matchHost": "registry-1.docker.io",
+      "hostType": "docker"
+    },
+    {
+      "matchHost": "mcr.microsoft.com",
+      "hostType": "docker"
+    },
+    {
+      "matchHost": "your-acr-name.azurecr.io",
+      "hostType": "docker"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "separateMinorPatch": true,
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "rangeStrategy": "pin",
+  "rollbackPrs": true,
+  "recreateClosed": true,
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🤖 Dependency Dashboard",
+  "dependencyDashboardHeader": "This issue contains a list of Renovate updates and their statuses.",
+  "dependencyDashboardFooter": "- ✅ Create all rate-limited PRs at once 🚀\n- ❓ Got questions? Check out Renovate's [Docs](https://docs.renovatebot.com/), particularly the Getting Started section\n- If you need any help migrating existing dependencies, have questions or want to chat with others, please use the [renovate discussions](https://github.com/renovatebot/renovate/discussions)",
+  "assignees": [],
+  "reviewers": [],
+  "addLabels": [
+    "renovate"
+  ],
+  "azureAutoComplete": true,
+  "azureWorkItemId": 0,
+  "platform": "azure",
+  "prFooter": "This PR was generated by Renovate Bot 🤖"
+}

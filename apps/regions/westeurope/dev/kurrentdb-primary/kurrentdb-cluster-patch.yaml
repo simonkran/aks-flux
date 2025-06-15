@@ -1,0 +1,43 @@
+apiVersion: kurrent.io/v1alpha1
+kind: KurrentDB
+metadata:
+  name: kurrentdb-cluster
+  labels:
+    environment: "dev"
+    region: "westeurope"
+    topology.kubernetes.io/region: westeurope
+spec:
+  replicas: 1
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+  storage:
+    size: "10Gi"
+    storageClass: "managed-premium"
+  configuration:
+    logLevel: "debug"
+    clusterSize: 1
+  podTemplate:
+    metadata:
+      labels:
+        environment: "dev"
+        region: "westeurope"
+        topology.kubernetes.io/region: westeurope
+      annotations:
+        region: "westeurope"
+    spec:
+      nodeSelector:
+        topology.kubernetes.io/region: westeurope
+      containers:
+      - name: kurrentdb
+        env:
+        - name: KURRENTDB_REGION
+          value: "westeurope"
+        - name: KURRENTDB_DATA_RESIDENCY
+          value: "eu"
+        - name: KURRENTDB_TIMEZONE
+          value: "Europe/London"

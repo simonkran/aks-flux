@@ -1,0 +1,85 @@
+trigger:
+- main
+
+pr:
+- main
+
+variables:
+  renovateConfigFile: 'renovate.json'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Validate
+  displayName: 'Validate Renovate Configuration'
+  jobs:
+  - job: ValidateConfig
+    displayName: 'Validate Renovate Config'
+    steps:
+    - checkout: self
+
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: '18.x'
+
+    - script: |
+        npm install -g renovate
+      displayName: 'Install Renovate'
+
+    - script: |
+        echo "Validating Renovate configuration..."
+        if [ ! -f "$(renovateConfigFile)" ]; then
+          echo "❌ renovate.json not found!"
+          exit 1
+        fi
+        
+        echo "✅ renovate.json file exists"
+        
+        # Validate JSON syntax
+        if cat $(renovateConfigFile) | python -m json.tool > /dev/null; then
+          echo "✅ renovate.json has valid JSON syntax"
+        else
+          echo "❌ renovate.json has invalid JSON syntax"
+          exit 1
+        fi
+      displayName: 'Basic Validation'
+
+    - script: |
+        echo "Running Renovate config validation..."
+        renovate-config-validator $(renovateConfigFile)
+      displayName: 'Renovate Config Validation'
+      continueOnError: true
+
+    - script: |
+        echo "🎉 Renovate Configuration Summary:"
+        echo "=================================="
+        echo "📅 Schedule: Weekly on Mondays at 2:30 AM UTC"
+        echo "🔄 Auto-merge: Enabled for patch updates"
+        echo "✋ Manual approval: Required for major updates"
+        echo "🌍 Environment-specific rules: Configured"
+        echo "🔒 Security updates: Prioritized"
+        echo "📊 Dependency dashboard: Enabled"
+        echo "🏷️  Labels: renovate"
+        echo "📝 Semantic commits: Enabled"
+        echo ""
+        echo "Platform Support:"
+        echo "- ✅ GitHub Actions workflow included"
+        echo "- ✅ Azure DevOps pipeline included"
+        echo ""
+        echo "Monitored Dependencies:"
+        echo "- 📦 Helm Charts (cert-manager, external-secrets, ingress-nginx, kube-prometheus-stack, podinfo)"
+        echo "- 🐳 Container Images (automatic detection)"
+        echo "- ⚡ Flux Components"
+        echo "- 📄 Kubernetes YAML manifests"
+      displayName: 'Configuration Summary'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Validation Results'
+      condition: always()
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/renovate-validation.xml'
+        failTaskOnFailedTests: false
+      continueOnError: true

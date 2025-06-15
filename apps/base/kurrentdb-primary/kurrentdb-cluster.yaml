@@ -1,0 +1,126 @@
+apiVersion: kurrent.io/v1alpha1
+kind: KurrentDB
+metadata:
+  name: kurrentdb-cluster
+  namespace: kurrentdb
+  labels:
+    app.kubernetes.io/name: kurrentdb-primary
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: kurrentdb-cluster
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  version: "latest"
+  
+  # Storage configuration
+  storage:
+    size: 10Gi
+    storageClass: default
+    accessModes:
+      - ReadWriteOnce
+  
+  # Resource configuration
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  # KurrentDB configuration
+  configuration:
+    clusterSize: 1
+    nodePort: 2113
+    httpPort: 2114
+    logLevel: info
+    
+    # Network configuration
+    networking:
+      advertisedHost: ""
+      externalIp: ""
+      
+    # Security configuration
+    security:
+      authentication: false
+      authorization: false
+      
+    # Projection configuration
+    projections:
+      enabled: true
+      threadsCount: 3
+      
+    # Database configuration
+    database:
+      chunkSize: 268435456  # 256MB
+      maxMemoryTableSize: 1000000
+      hashCollisionReadLimit: 100
+      
+  # Service configuration
+  serviceSpec:
+    type: ClusterIP
+    ports:
+      - name: tcp
+        port: 2113
+        targetPort: 2113
+        protocol: TCP
+      - name: http
+        port: 2114
+        targetPort: 2114
+        protocol: TCP
+  
+  # Pod template
+  podTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kurrentdb-primary
+        app.kubernetes.io/component: database
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      
+      containers:
+      - name: kurrentdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 2114
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 2114
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        # Environment variables
+        env:
+        - name: KURRENTDB_CLUSTER_SIZE
+          value: "1"
+        - name: KURRENTDB_LOG_LEVEL
+          value: "info"
+        - name: KURRENTDB_ENABLE_EXTERNAL_TCP
+          value: "true"
+        - name: KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP
+          value: "true"
