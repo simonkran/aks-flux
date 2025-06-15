@@ -16,7 +16,7 @@ patches:
         value: "uat"
       - op: add
         path: /metadata/labels/region
-        value: "western-europe"
+        value: "westeurope"
       - op: replace
         path: /spec/values/image/tag
         value: "6.0.1"
@@ -38,7 +38,7 @@ patches:
           topology.kubernetes.io/region: westeurope
       - op: add
         path: /spec/values/podAnnotations/region
-        value: "western-europe"
+        value: "westeurope"
       - op: add
         path: /spec/values/podAnnotations/environment
         value: "uat"

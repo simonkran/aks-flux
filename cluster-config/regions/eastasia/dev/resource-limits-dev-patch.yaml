@@ -4,12 +4,12 @@ metadata:
   name: default-quota
   namespace: default
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "dev"
 spec:
   hard:
-    requests.cpu: "2"      # Lower limits for dev
+    requests.cpu: "2" # Lower limits for dev
     requests.memory: 4Gi
     limits.cpu: "4"
     limits.memory: 8Gi
-    pods: "20"             # More pods allowed in dev
+    pods: "20" # More pods allowed in dev

@@ -122,8 +122,8 @@
       "description": "Development environment - more aggressive updates",
       "matchFileNames": [
         "**/overlays/dev/**",
-        "**/east-asia/dev/**",
-        "**/western-europe/dev/**"
+        "**/eastasia/dev/**",
+        "**/westeurope/dev/**"
       ],
       "automerge": true,
       "automergeType": "pr",
@@ -133,8 +133,8 @@
       "description": "Production environment - conservative updates",
       "matchFileNames": [
         "**/overlays/prod/**",
-        "**/east-asia/prod/**",
-        "**/western-europe/prod/**"
+        "**/eastasia/prod/**",
+        "**/westeurope/prod/**"
       ],
       "dependencyDashboardApproval": true,
       "stabilityDays": 7,

@@ -8,16 +8,16 @@ kind: ClusterRoleBinding
 metadata:
   name: azure-ad-developers-prod-readonly-eastasia
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "prod"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: azure-ad-viewer
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: "DEVELOPER_GROUP_EASTASIA_ID"  # Replace with Azure AD group object ID for East Asia
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: "DEVELOPER_GROUP_EASTASIA_ID" # Replace with Azure AD group object ID for East Asia
 
 ---
 # Remove default developer permissions in production (East Asia)
@@ -27,6 +27,6 @@ kind: ClusterRoleBinding
 metadata:
   name: azure-ad-developers-eastasia
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "prod"
-subjects: []  # Empty subjects removes the binding
+subjects: [] # Empty subjects removes the binding

@@ -8,16 +8,16 @@ kind: ClusterRoleBinding
 metadata:
   name: azure-ad-developers-dev-eastasia
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "dev"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: azure-ad-developer
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: "DEVELOPER_GROUP_EASTASIA_ID"  # Replace with Azure AD group object ID for East Asia
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: "DEVELOPER_GROUP_EASTASIA_ID" # Replace with Azure AD group object ID for East Asia
 
 ---
 # Developers can create namespaces in dev (East Asia)
@@ -26,21 +26,21 @@ kind: ClusterRole
 metadata:
   name: azure-ad-developer-dev-enhanced-eastasia
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "dev"
 rules:
-# All developer permissions plus namespace creation
-- apiGroups: [""]
-  resources: ["namespaces"]
-  verbs: ["get", "list", "watch", "create", "delete"]
-# Enhanced debugging access
-- apiGroups: [""]
-  resources: ["events"]
-  verbs: ["get", "list", "watch"]
-# Access to resource metrics
-- apiGroups: ["metrics.k8s.io"]
-  resources: ["pods", "nodes"]
-  verbs: ["get", "list"]
+  # All developer permissions plus namespace creation
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  # Enhanced debugging access
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+  # Access to resource metrics
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list"]
 
 ---
 # Bind enhanced dev permissions (East Asia)
@@ -49,13 +49,13 @@ kind: ClusterRoleBinding
 metadata:
   name: azure-ad-developers-dev-enhanced-eastasia
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "dev"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: azure-ad-developer-dev-enhanced-eastasia
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: "DEVELOPER_GROUP_EASTASIA_ID"  # Replace with Azure AD group object ID for East Asia
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: "DEVELOPER_GROUP_EASTASIA_ID" # Replace with Azure AD group object ID for East Asia

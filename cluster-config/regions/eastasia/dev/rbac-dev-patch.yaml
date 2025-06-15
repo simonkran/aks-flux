@@ -3,12 +3,12 @@ kind: ClusterRole
 metadata:
   name: developer
   labels:
-    region: "east-asia"
+    region: "eastasia"
     environment: "dev"
 rules:
-- apiGroups: ["*"]  # More permissive in dev
-  resources: ["*"]
-  verbs: ["*"]
-- apiGroups: [""]
-  resources: ["nodes"]  # Can view nodes in dev
-  verbs: ["get", "list", "watch"]
+  - apiGroups: ["*"] # More permissive in dev
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["nodes"] # Can view nodes in dev
+    verbs: ["get", "list", "watch"]

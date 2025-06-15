@@ -15,7 +15,7 @@ This implementation provides comprehensive monitoring for KurrentDB with Grafana
 │       ├── 📄 prometheusrule.yaml        # Alerting rules & recording rules
 │       └── 📄 grafana-dashboards.yaml    # Custom dashboards
 └── 📁 regions/
-    └── 📁 western-europe/
+    └── 📁 westeurope/
         └── 📁 dev/
             ├── 📁 kurrentdb-monitoring/
             │   ├── 📄 kustomization.yaml              # Regional overlay
@@ -92,7 +92,7 @@ This implementation provides comprehensive monitoring for KurrentDB with Grafana
 ### **Regional Labels**
 - All metrics automatically labeled with:
   - `environment`: dev/stage/uat/prod
-  - `region`: western-europe/east-asia
+  - `region`: westeurope/eastasia
   - `service`: KurrentDB service name
   - `pod`: Kubernetes pod name
   - `namespace`: Kubernetes namespace
@@ -117,7 +117,7 @@ This implementation provides comprehensive monitoring for KurrentDB with Grafana
 ```bash
 # Files have been created in your repository:
 infrastructure/base/kurrentdb-monitoring/
-infrastructure/regions/western-europe/dev/kurrentdb-monitoring/
+infrastructure/regions/westeurope/dev/kurrentdb-monitoring/
 ```
 
 ### 2. **Ensure KurrentDB Services Expose Metrics** ⚠️ REQUIRED
@@ -225,7 +225,7 @@ kubectl get prometheusrule -n monitoring kurrentdb-alerts
 2. **Set up alerting channels** (Slack, email, PagerDuty)
 3. **Create runbooks** for alert response procedures
 4. **Train team members** on dashboard usage
-5. **Extend to other regions** (east-asia) using the same pattern
+5. **Extend to other regions** (eastasia) using the same pattern
 6. **Add synthetic monitoring** for application-level health checks
 
 ## 📚 References

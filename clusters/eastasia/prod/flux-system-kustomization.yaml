@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/east-asia/prod
+  path: ./clusters/eastasia/prod
   prune: true
   sourceRef:
     kind: GitRepository
