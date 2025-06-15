@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/westerneurope/stage
+  path: ./clusters/westeurope/stage
   prune: true
   sourceRef:
     kind: GitRepository
