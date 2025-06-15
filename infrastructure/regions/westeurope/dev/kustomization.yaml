@@ -4,8 +4,8 @@ resources:
   - ../../../base/cert-manager/
   - ../../../base/external-secrets/
   - ../../../base/ingress-nginx/
-  - ../../../base/kube-prometheus-stack/
-  - ../../../base/kurrentdb-monitoring/
+  # - ../../../base/kube-prometheus-stack/
+  # - ../../../base/kurrentdb-monitoring/
 
 # Add environment and region labels
 commonLabels:
