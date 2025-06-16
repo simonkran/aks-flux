@@ -7,6 +7,11 @@ metadata:
     region: westeurope
     environment: dev
 spec:
+  # For Dev environment. The service is type: loadbalancer. In KIND cluster it will not receive an IP address and Flux won't get healthy.
+  install:
+    disableWait: true
+  upgrade:
+    disableWait: true
   chart:
     spec:
       version: 4.12.3
