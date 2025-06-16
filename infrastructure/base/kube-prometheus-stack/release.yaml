@@ -100,7 +100,6 @@ spec:
     # Grafana configuration
     grafana:
       enabled: true
-      defaultDashboardsEnabled: true
 
       # Azure AD Authentication - disable default admin password
       # adminPassword: null
@@ -200,17 +199,6 @@ spec:
           auto_assign_org: true
           auto_assign_org_role: Viewer
           default_theme: dark
-
-      dashboards:
-        flux:
-          flux-cluster:
-            gnetId: 16714
-            revision: 1
-            datasource: Prometheus
-          flux-control-plane:
-            gnetId: 16713
-            revision: 1
-            datasource: Prometheus
 
     # Alertmanager configuration
     alertmanager:
