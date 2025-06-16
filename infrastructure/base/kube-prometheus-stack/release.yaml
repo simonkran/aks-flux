@@ -105,30 +105,30 @@ spec:
       # adminPassword: null
 
       # Environment variables for Azure AD
-      env:
-        GF_AUTH_AZUREAD_ENABLED: "true"
-        GF_AUTH_AZUREAD_ALLOW_SIGN_UP: "true"
-        GF_AUTH_AZUREAD_AUTO_LOGIN: "false"
-        GF_AUTH_AZUREAD_SCOPES: "openid email profile"
-        GF_AUTH_AZUREAD_ALLOWED_DOMAINS: "your-company.com" # Replace with your domain
+      # env:
+      #   GF_AUTH_AZUREAD_ENABLED: "true"
+      #   GF_AUTH_AZUREAD_ALLOW_SIGN_UP: "true"
+      #   GF_AUTH_AZUREAD_AUTO_LOGIN: "false"
+      #   GF_AUTH_AZUREAD_SCOPES: "openid email profile"
+      #   GF_AUTH_AZUREAD_ALLOWED_DOMAINS: "your-company.com" # Replace with your domain
 
       # Environment variables from Azure AD secret
-      envFromSecrets:
-        - name: grafana-azure-ad
-          prefix: GF_AUTH_AZUREAD_
-          keys:
-            - name: TENANT_ID
-              key: tenant-id
-            - name: CLIENT_ID
-              key: client-id
-            - name: CLIENT_SECRET
-              key: client-secret
-            - name: ADMIN_GROUP_ID
-              key: admin-group-id
-            - name: EDITOR_GROUP_ID
-              key: editor-group-id
-            - name: VIEWER_GROUP_ID
-              key: viewer-group-id
+      # envFromSecrets:
+      #   - name: grafana-azure-ad
+      #     prefix: GF_AUTH_AZUREAD_
+      #     keys:
+      #       - name: TENANT_ID
+      #         key: tenant-id
+      #       - name: CLIENT_ID
+      #         key: client-id
+      #       - name: CLIENT_SECRET
+      #         key: client-secret
+      #       - name: ADMIN_GROUP_ID
+      #         key: admin-group-id
+      #       - name: EDITOR_GROUP_ID
+      #         key: editor-group-id
+      #       - name: VIEWER_GROUP_ID
+      #         key: viewer-group-id
 
       # Ingress configuration
       ingress:
