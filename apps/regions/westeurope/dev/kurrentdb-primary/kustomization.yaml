@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../../base/kurrentdb-primary/
+- ../../../../base/kurrentdb-primary/
 
 # Strategic merge patch for regional configuration
-patchesStrategicMerge:
-- kurrentdb-cluster-patch.yaml
+patches:
+- path: kurrentdb-cluster-patch.yaml
