@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: podinfo
@@ -26,7 +26,7 @@ spec:
       serviceMonitor:
         enabled: true
         namespace: monitoring
-    
+
     replicaCount: 2
     image:
       tag: "6.6.0"
@@ -40,14 +40,14 @@ spec:
         cert-manager.io/cluster-issuer: "letsencrypt-staging"
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
       hosts:
-        - host: podinfo.example.com  # Change this to your domain
+        - host: podinfo.example.com # Change this to your domain
           paths:
             - path: /
               pathType: Prefix
       tls:
         - secretName: podinfo-tls
           hosts:
-            - podinfo.example.com  # Change this to your domain
+            - podinfo.example.com # Change this to your domain
     resources:
       limits:
         cpu: 200m

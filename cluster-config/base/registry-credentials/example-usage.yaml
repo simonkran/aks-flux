@@ -1,7 +1,7 @@
 # Example: How to use registry credentials in your applications
 # This shows how podinfo would reference private registry images
 
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: podinfo
@@ -12,16 +12,16 @@ spec:
     image:
       repository: yourregistry.azurecr.io/podinfo
       tag: "6.6.0"
-    
+
     # Reference the registry credentials
     imagePullSecrets:
       - name: acr-credentials
-    
+
     # Use the workload identity service account
     serviceAccount:
-      create: false  # Use existing service account
+      create: false # Use existing service account
       name: workload-identity-sa
-    
+
     # Pod security context (recommended)
     securityContext:
       runAsNonRoot: true

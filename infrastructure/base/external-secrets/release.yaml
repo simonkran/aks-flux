@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: external-secrets
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: external-secrets
-      version: "0.9.19"  # Pinned to specific version
+      version: "0.9.19" # Pinned to specific version
       sourceRef:
         kind: HelmRepository
         name: external-secrets
@@ -18,29 +18,29 @@ spec:
   targetNamespace: external-secrets-system
   values:
     installCRDs: true
-    
+
     # Controller configuration
     replicaCount: 2
-    
+
     # Security settings
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 65534
       seccompProfile:
         type: RuntimeDefault
-    
+
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 65534
       fsGroup: 65534
       seccompProfile:
         type: RuntimeDefault
-    
+
     # Resource limits
     resources:
       limits:
@@ -49,12 +49,12 @@ spec:
       requests:
         cpu: 100m
         memory: 128Mi
-    
+
     # Monitoring
     serviceMonitor:
       enabled: true
       namespace: monitoring
-    
+
     # Webhook configuration
     webhook:
       replicaCount: 2
@@ -62,20 +62,20 @@ spec:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
-          - ALL
+            - ALL
         readOnlyRootFilesystem: true
         runAsNonRoot: true
         runAsUser: 65534
         seccompProfile:
           type: RuntimeDefault
-      
+
       podSecurityContext:
         runAsNonRoot: true
         runAsUser: 65534
         fsGroup: 65534
         seccompProfile:
           type: RuntimeDefault
-      
+
       resources:
         limits:
           cpu: 100m
@@ -83,7 +83,7 @@ spec:
         requests:
           cpu: 50m
           memory: 64Mi
-    
+
     # Cert Controller configuration
     certController:
       replicaCount: 1
@@ -91,20 +91,20 @@ spec:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
-          - ALL
+            - ALL
         readOnlyRootFilesystem: true
         runAsNonRoot: true
         runAsUser: 65534
         seccompProfile:
           type: RuntimeDefault
-      
+
       podSecurityContext:
         runAsNonRoot: true
         runAsUser: 65534
         fsGroup: 65534
         seccompProfile:
           type: RuntimeDefault
-      
+
       resources:
         limits:
           cpu: 100m
