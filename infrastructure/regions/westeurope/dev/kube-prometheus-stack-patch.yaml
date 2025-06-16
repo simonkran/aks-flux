@@ -19,10 +19,10 @@ spec:
     grafana:
       ingress:
         hosts:
-          - "grafana-westeurope-dev.example.com"
+          - "grafana-westeurope-dev.127-0-0-1.nip.io"
         tls:
           - hosts:
-              - "grafana-westeurope-dev.example.com"
+              - "grafana-westeurope-dev.127-0-0-1.nip.io"
       nodeSelector:
         topology.kubernetes.io/region: westeurope
       resources:
@@ -60,10 +60,10 @@ spec:
     prometheus:
       ingress:
         hosts:
-          - "prometheus-westeurope-dev.example.com"
+          - "prometheus-westeurope-dev.127-0-0-1.nip.io"
         tls:
           - hosts:
-              - "prometheus-westeurope-dev.example.com"
+              - "prometheus-westeurope-dev.127-0-0-1.nip.io"
       prometheusSpec:
         nodeSelector:
           topology.kubernetes.io/region: westeurope
@@ -80,10 +80,10 @@ spec:
     alertmanager:
       ingress:
         hosts:
-          - "alertmanager-westeurope-dev.example.com"
+          - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
         tls:
           - hosts:
-              - "alertmanager-westeurope-dev.example.com"
+              - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
       alertmanagerSpec:
         nodeSelector:
           topology.kubernetes.io/region: westeurope
