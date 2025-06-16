@@ -18,6 +18,8 @@ spec:
     # Regional hostnames for Western Europe Dev
     grafana:
       ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "grafana-westeurope-dev.127-0-0-1.nip.io"
         tls:
@@ -57,6 +59,8 @@ spec:
 
     prometheus:
       ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "prometheus-westeurope-dev.127-0-0-1.nip.io"
         tls:
@@ -75,6 +79,8 @@ spec:
 
     alertmanager:
       ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
         tls:
