@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: cert-manager
-      version: "1.15.3"  # Pinned to exact version
+      version: 1.18.0
       sourceRef:
         kind: HelmRepository
         name: jetstack
@@ -59,7 +59,7 @@ spec:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       seccompProfile:
