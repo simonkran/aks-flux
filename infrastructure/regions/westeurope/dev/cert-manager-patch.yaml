@@ -10,3 +10,6 @@ spec:
   chart:
     spec:
       version: 1.18.0
+  values:
+    startupapicheck:
+      enabled: false
