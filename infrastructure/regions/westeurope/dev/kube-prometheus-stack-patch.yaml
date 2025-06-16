@@ -9,7 +9,7 @@ metadata:
 spec:
   chart:
     spec:
-      version: "55.x"
+      version: 74.2.1
   values:
     commonLabels:
       environment: dev

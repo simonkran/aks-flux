@@ -9,7 +9,7 @@ metadata:
 spec:
   chart:
     spec:
-      version: "v1.13.x"
+      version: 1.18.0
   values:
     nodeSelector:
       topology.kubernetes.io/region: westeurope
