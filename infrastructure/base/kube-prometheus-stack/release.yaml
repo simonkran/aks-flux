@@ -103,7 +103,7 @@ spec:
       defaultDashboardsEnabled: true
 
       # Azure AD Authentication - disable default admin password
-      adminPassword: null
+      # adminPassword: null
 
       # Environment variables for Azure AD
       env:
@@ -189,7 +189,7 @@ spec:
 
         # Security settings
         security:
-          disable_initial_admin_creation: true
+          # disable_initial_admin_creation: true
           cookie_secure: true
           cookie_samesite: lax
           strict_transport_security: true
