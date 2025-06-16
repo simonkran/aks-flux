@@ -10,6 +10,3 @@ spec:
   chart:
     spec:
       version: 1.18.0
-  values:
-    nodeSelector:
-      topology.kubernetes.io/region: westeurope

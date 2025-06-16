@@ -24,7 +24,7 @@ data:
       - port: http-prom
         interval: 30s
         path: /metrics
-  
+
   # Additional Prometheus rules for infrastructure
   prometheus-rules: |
     groups:
