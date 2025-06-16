@@ -4,4 +4,5 @@ resources:
   - flux-system-kustomization.yaml
   # - cluster-config.yaml
   - infrastructure.yaml
+  - infrastructure-configs.yaml
   - apps.yaml
