@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: podinfo
-      version: "6.6.x"
+      version: 6.9.0
       sourceRef:
         kind: HelmRepository
         name: podinfo
@@ -17,9 +17,6 @@ spec:
       interval: 12h
   targetNamespace: podinfo
   values:
-    # Global configuration
-    commonLabels:
-      app.kubernetes.io/managed-by: flux
     # Monitoring configuration
     metrics:
       enabled: true
@@ -27,12 +24,7 @@ spec:
         enabled: true
         namespace: monitoring
 
-    replicaCount: 2
-    image:
-      tag: "6.6.0"
-    service:
-      type: ClusterIP
-      port: 9898
+    replicaCount: 1
     ingress:
       enabled: true
       className: nginx
@@ -44,10 +36,10 @@ spec:
           paths:
             - path: /
               pathType: Prefix
-      tls:
-        - secretName: podinfo-tls
-          hosts:
-            - podinfo.example.com # Change this to your domain
+      # tls:
+      #   - secretName: podinfo-tls
+      #     hosts:
+      #       - podinfo.example.com # Change this to your domain
     resources:
       limits:
         cpu: 200m
@@ -57,7 +49,7 @@ spec:
         memory: 128Mi
     ui:
       color: "#34577c"
-      message: "Welcome to East Asia Dev!"
+      message: "Welcome to West Europe Dev!"
     redis:
       enabled: false
     cache:

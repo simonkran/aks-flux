@@ -2,14 +2,16 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: podinfo
+  namespace: flux-system
   labels:
     environment: dev
     region: westeurope
 spec:
+chart:
+  spec:
+    version: 6.8.0
   values:
     replicaCount: 1
-    image:
-      tag: "6.0.0"
     resources:
       requests:
         cpu: "10m"
@@ -17,8 +19,16 @@ spec:
       limits:
         cpu: "100m"
         memory: "64Mi"
-    nodeSelector:
-      topology.kubernetes.io/region: westeurope
-    podAnnotations:
-      region: "westeurope"
-      environment: "dev"
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+        - host: podinfo-westeurope-dev.127-0-0-1.nip.io # Change this to your domain
+          paths:
+            - path: /
+              pathType: Prefix
+      # tls:
+      #   - secretName: podinfo-westeurope-dev.127-0-0-1.nip.io
+      #     hosts:
+      #       - podinfo-westeurope-dev.127-0-0-1.nip.io # Change this to your domain
