@@ -200,18 +200,6 @@ spec:
           auto_assign_org: true
           auto_assign_org_role: Viewer
           default_theme: dark
-      dashboardProviders:
-        dashboardproviders.yaml:
-          apiVersion: 1
-          providers:
-            - name: "flux"
-              orgId: 1
-              folder: "Flux"
-              type: file
-              disableDeletion: false
-              editable: true
-              options:
-                path: /var/lib/grafana/dashboards/flux
 
       dashboards:
         flux:
