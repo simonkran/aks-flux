@@ -16,10 +16,17 @@ spec:
         namespace: flux-system
       interval: 12h
   install:
-    crds: CreateReplace
+    crds: Create
   upgrade:
     crds: CreateReplace
   targetNamespace: monitoring
+  driftDetection:
+    mode: enabled
+    ignore:
+      # Ignore "validated" annotation which is not inserted during install
+      - paths: ["/metadata/annotations/prometheus-operator-validated"]
+        target:
+          kind: PrometheusRule
   values:
     # Global configuration
 
@@ -36,14 +43,14 @@ spec:
             memory: 1Gi
 
         # Storage configuration
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: default
-              accessModes: ["ReadWriteOnce"]
-              resources:
-                requests:
-                  storage: 10Gi
+        # storageSpec:
+        #   volumeClaimTemplate:
+        #     spec:
+        #       storageClassName: default
+        #       accessModes: ["ReadWriteOnce"]
+        #       resources:
+        #         requests:
+        #           storage: 10Gi
 
         # Retention policy
         retention: 7d
@@ -156,10 +163,10 @@ spec:
           type: RuntimeDefault
 
       # Persistence
-      persistence:
-        enabled: true
-        storageClassName: default
-        size: 5Gi
+      # persistence:
+      #   enabled: true
+      #   storageClassName: default
+      #   size: 5Gi
 
       # Grafana configuration
       grafana.ini:
@@ -230,14 +237,14 @@ spec:
             memory: 64Mi
 
         # Storage
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: default
-              accessModes: ["ReadWriteOnce"]
-              resources:
-                requests:
-                  storage: 2Gi
+        # storage:
+        #   volumeClaimTemplate:
+        #     spec:
+        #       storageClassName: default
+        #       accessModes: ["ReadWriteOnce"]
+        #       resources:
+        #         requests:
+        #           storage: 2Gi
 
         # Security context
         securityContext:
