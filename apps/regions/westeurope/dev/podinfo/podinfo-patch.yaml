@@ -7,9 +7,9 @@ metadata:
     environment: dev
     region: westeurope
 spec:
-chart:
-  spec:
-    version: 6.8.0
+  chart:
+    spec:
+      version: 6.8.0
   values:
     replicaCount: 1
     resources:
