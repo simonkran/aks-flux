@@ -129,10 +129,10 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
         hosts:
           - grafana.example.com # Change to your domain
-        tls:
-          - secretName: grafana-tls
-            hosts:
-              - grafana.example.com
+        # tls:
+        #   - secretName: grafana-tls
+        #     hosts:
+        #       - grafana.example.com
 
       # Resources
       resources:

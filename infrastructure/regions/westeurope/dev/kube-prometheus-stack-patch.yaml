@@ -22,9 +22,9 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "grafana-westeurope-dev.127-0-0-1.nip.io"
-        tls:
-          - hosts:
-              - "grafana-westeurope-dev.127-0-0-1.nip.io"
+        # tls:
+        #   - hosts:
+        #       - "grafana-westeurope-dev.127-0-0-1.nip.io"
       resources:
         requests:
           cpu: "50m"
@@ -63,9 +63,9 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "prometheus-westeurope-dev.127-0-0-1.nip.io"
-        tls:
-          - hosts:
-              - "prometheus-westeurope-dev.127-0-0-1.nip.io"
+        # tls:
+        #   - hosts:
+        #       - "prometheus-westeurope-dev.127-0-0-1.nip.io"
       prometheusSpec:
         resources:
           requests:
@@ -83,6 +83,6 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
-        tls:
-          - hosts:
-              - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
+        # tls:
+        #   - hosts:
+        #       - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
