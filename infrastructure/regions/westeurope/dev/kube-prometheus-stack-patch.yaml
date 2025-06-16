@@ -23,8 +23,6 @@ spec:
         tls:
           - hosts:
               - "grafana-westeurope-dev.127-0-0-1.nip.io"
-      nodeSelector:
-        topology.kubernetes.io/region: westeurope
       resources:
         requests:
           cpu: "50m"
@@ -65,8 +63,6 @@ spec:
           - hosts:
               - "prometheus-westeurope-dev.127-0-0-1.nip.io"
       prometheusSpec:
-        nodeSelector:
-          topology.kubernetes.io/region: westeurope
         resources:
           requests:
             cpu: "100m"
@@ -84,6 +80,3 @@ spec:
         tls:
           - hosts:
               - "alertmanager-westeurope-dev.127-0-0-1.nip.io"
-      alertmanagerSpec:
-        nodeSelector:
-          topology.kubernetes.io/region: westeurope

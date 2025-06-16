@@ -20,8 +20,6 @@ spec:
         limits:
           cpu: "200m"
           memory: "256Mi"
-      nodeSelector:
-        topology.kubernetes.io/region: westeurope
       service:
         annotations:
           service.beta.kubernetes.io/azure-load-balancer-resource-group: "rg-westeurope-dev"
