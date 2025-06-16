@@ -27,15 +27,8 @@ spec:
       podAnnotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "10254"
-      service:
-        type: LoadBalancer
         annotations:
           service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
-      ingressClassResource:
-        name: nginx
-        enabled: true
-        default: true
-      watchIngressWithoutClass: true
       resources:
         limits:
           cpu: 100m

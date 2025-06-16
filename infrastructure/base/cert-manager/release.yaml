@@ -18,16 +18,13 @@ spec:
   targetNamespace: cert-manager
   values:
     installCRDs: true
-    global:
-      leaderElection:
-        namespace: cert-manager
     prometheus:
       enabled: true
       servicemonitor:
         enabled: true
         namespace: monitoring
     webhook:
-      replicaCount: 2
+      replicaCount: 1
       resources:
         limits:
           cpu: 100m
@@ -36,7 +33,7 @@ spec:
           cpu: 10m
           memory: 32Mi
     cainjector:
-      replicaCount: 2
+      replicaCount: 1
       resources:
         limits:
           cpu: 100m
