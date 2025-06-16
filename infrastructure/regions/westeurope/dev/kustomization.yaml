@@ -19,4 +19,4 @@ labels:
 patches:
   - path: cert-manager-patch.yaml
   - path: ingress-nginx-patch.yaml
-  - path: kube-prometheus-stack.yaml
+  - path: kube-prometheus-stack-patch.yaml
